@@ -1,3 +1,5 @@
 #pragma once
 
-void EngineHello();
+void EngineStart();
+void EngineTick();
+void EngineShutdown();
