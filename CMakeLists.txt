@@ -10,7 +10,4 @@ set(SFML_BUILD_NETWORK OFF)
 FetchContent_Declare(SFML GIT_REPOSITORY https://github.com/SFML/SFML.git GIT_TAG 2.6.1)
 FetchContent_MakeAvailable(SFML)
 
-add_subdirectory(Core)
-add_subdirectory(Engine)
-add_subdirectory(Game)
-add_subdirectory(Editor)
+add_subdirectory(Source)
