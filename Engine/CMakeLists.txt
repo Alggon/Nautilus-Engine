@@ -1,0 +1,5 @@
+add_library(NautilusEngine SHARED src/Engine/Engine.cpp)
+target_include_directories(NautilusEngine PUBLIC includes)
+target_link_libraries(NautilusEngine PUBLIC NautilusCore)
+target_link_libraries(NautilusEngine PUBLIC sfml-graphics)
+set_target_properties(NautilusEngine PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)

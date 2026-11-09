@@ -1,0 +1,2 @@
+add_library(NautilusCore INTERFACE)
+target_include_directories(NautilusCore INTERFACE includes)

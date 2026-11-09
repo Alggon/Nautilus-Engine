@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.24)
+project(NAUTILUS LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+include(FetchContent)
+set(BUILD_SHARED_LIBS ON)
+set(SFML_BUILD_AUDIO OFF)
+set(SFML_BUILD_NETWORK OFF)
+FetchContent_Declare(SFML GIT_REPOSITORY https://github.com/SFML/SFML.git GIT_TAG 2.6.1)
+FetchContent_MakeAvailable(SFML)
+
+add_subdirectory(Core)
+add_subdirectory(Engine)
+add_subdirectory(Game)
+add_subdirectory(Editor)

@@ -1,0 +1,3 @@
+add_library(GameCode SHARED src/Game.cpp)
+target_link_libraries(GameCode PRIVATE NautilusEngine)
+set_target_properties(GameCode PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
