@@ -1,7 +1,6 @@
 #pragma once
 #include <utility>
 #include <memory>
-#include <iostream>
 
 template<typename T>
 class DynArray
@@ -25,8 +24,6 @@ public:
 	{
 		if (m_size == m_capacity)
 		{
-			std::cout << "Increase capacity" << std::endl;
-
 			// Increase array capacity
 			size_t previousCapacity = m_capacity;
 			m_capacity *= 2;
@@ -77,7 +74,7 @@ public:
 
 private:
 	size_t m_size = 0;
-	size_t m_capacity = 1;
+	size_t m_capacity = 64;
 
 	T* m_data;
 
