@@ -1,63 +1,85 @@
 #pragma once
+#include <utility>
+#include <memory>
+#include <iostream>
 
+template<typename T>
 class DynArray
 {
 public:
-	DynArray() { m_data = new int[0]; };
-	~DynArray() { delete[] m_data; };
+	DynArray() { m_data = m_allocator.allocate(m_capacity); };
 
-	void Add(int v)
+	~DynArray()
 	{
-		size_t currentSize = m_size;
-		++m_size;
-
-		int* newData = new int[m_size];
-
-		if (m_data)
+		for (size_t i = 0; i < m_size; ++i)
 		{
-			std::copy(m_data, m_data + currentSize, newData);
-			delete[] m_data;
+			// Destroy every element
+			std::destroy_at(&m_data[i]);
 		}
 
-		m_data = newData;
-		m_data[m_size - 1] = v;
+		// Complete deallocation
+		m_allocator.deallocate(m_data, m_capacity);
+	};
+
+	void Add(const T& v)
+	{
+		if (m_size == m_capacity)
+		{
+			std::cout << "Increase capacity" << std::endl;
+
+			// Increase array capacity
+			size_t previousCapacity = m_capacity;
+			m_capacity *= 2;
+			T* newData = m_allocator.allocate(m_capacity);
+
+			// Copy previous data in the new array
+			for (size_t i = 0; i < m_size; ++i)
+			{
+				// Create element into the new array
+				std::construct_at(&newData[i], std::move(m_data[i]));
+				// Delete element in previous array
+				std::destroy_at(&m_data[i]);
+			}
+
+			m_allocator.deallocate(m_data, previousCapacity);
+
+			m_data = newData;
+		}
+
+		// Construct new element
+		std::construct_at(&m_data[m_size], v);
+
+		// Update array size
+		++m_size;
 	};
 
 	void RemoveAt(int index)
 	{
+		// Security
 		if (m_size == 0 || index < 0 || index >= m_size) return;
 
-		if (m_size == 1)
+		// Shrink
+		for (size_t i = index; i < m_size - 1; ++i)
 		{
-			delete[] m_data;
-			m_data = nullptr;
-			return;
+			// Move to the left
+			m_data[i] = std::move(m_data[i + 1]);
 		}
 
-		size_t currentSize = m_size;
+		// Delete element
+		std::destroy_at(&m_data[m_size - 1]);
+		// Update array size
 		--m_size;
-
-		int* newData = new int[m_size];
-
-		size_t newIndex = 0;
-		for (size_t i = 0; i < currentSize; ++i)
-		{
-			if (i != index)
-			{
-				newData[newIndex] = m_data[i];
-				++newIndex;
-			}
-		}
-
-		delete[] m_data;
-
-		m_data = newData;
 	}
 
-	int& operator[](size_t i) { return m_data[i]; };
+	T& operator[](const size_t i) { return m_data[i]; };
 	size_t Num() const { return m_size; };
+	size_t Capacity() const { return m_capacity; };
 
 private:
-	size_t m_size = 0, m_capacity = 1024;
-	int* m_data;
+	size_t m_size = 0;
+	size_t m_capacity = 1;
+
+	T* m_data;
+
+	std::allocator<T> m_allocator;
 };
