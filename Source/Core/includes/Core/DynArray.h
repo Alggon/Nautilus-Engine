@@ -65,13 +65,26 @@ public:
 			Reserve();
 		}
 
-		for (size_t i = m_size; i > index; --i)
+		if (index == m_size)
 		{
-			// Move to the right
-			m_data[i] = std::move(m_data[i - 1]);
+			// No movement needed
+			std::construct_at(&m_data[m_size], v);
+		}
+		else
+		{
+			// Construct last block
+			std::construct_at(&m_data[m_size], std::move(m_data[m_size - 1]));
+
+			// Loop from second to last to index
+			for (size_t i = m_size - 1; i > index; --i)
+			{
+				// Move to the right
+				m_data[i] = std::move(m_data[i - 1]);
+			}
+
+			m_data[index] = v;
 		}
 
-		m_data[index] = v;
 		++m_size;
 
 		return true;
@@ -85,29 +98,39 @@ public:
 	{
 		// Security
 		if (m_size == 0) return false;
-		// index to remove
-		DynArray<int> indexes;
 
-		for (size_t i = 0; i < m_size; ++i)
+		bool elementRemoved = false;
+
+		// Where to write when element is removed
+		size_t writeIndex = 0;
+		
+		for (size_t readIndex = 0; readIndex < m_size; ++readIndex)
 		{
-			// Find element to remove
-			if (m_data[i] == v)
+			if (m_data[readIndex] == v)
 			{
-				// Stock indexes
-				indexes.Add_Front(i);
+				// Element needs to be removed
+				std::destroy_at(&m_data[readIndex]);
+				elementRemoved = true;
+			}
+			else
+			{
+				// Element is valid
+				if (writeIndex != readIndex)
+				{
+					// Move element to the left..
+					std::construct_at(&m_data[writeIndex], std::move(m_data[readIndex]));
+					// ..And destroy it
+					std::destroy_at(&m_data[readIndex]);
+				}
+
+				// Increase only when element is not removed
+				writeIndex++;
 			}
 		}
 
-		if (indexes.Empty()) return false;
-
-		// for each element iteration
-		for (const int i : indexes)
-		{
-			// Remove at found index
-			RemoveAt(i);
-		}
-
-		return true;
+		// Update size
+		m_size = writeIndex;
+		return elementRemoved;
 	}
 	/// <summary>
 	/// Remove element at wanted index.
@@ -142,6 +165,8 @@ public:
 		// Shrink array capacity to bit ceil
 		m_capacity = std::bit_ceil(m_size);
 
+		if (m_capacity == 0) m_capacity = 2;
+
 		T* newData = m_allocator.allocate(m_capacity);
 
 		// Copy previous data in the new array
@@ -170,11 +195,11 @@ public:
 	/// <summary>
 	/// Returns if the array is empty or not.
 	/// </summary>
-	bool Empty() const { Size() == 0; };
+	bool Empty() const { return Size() == 0; };
 
 	T& operator[](const size_t i) { return m_data[i]; };
-	T* begin() { return &m_data[0]; };
-	T* end() { return &m_data[m_size]; };
+	T* begin() { return m_data; };
+	T* end() { return m_data + m_size; };
 
 private:
 	size_t m_size = 0;
