@@ -2,9 +2,9 @@
 #include <SFML/Graphics.hpp>
 
 int main()
-{	
+{
 	EngineStart();
-
+	
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Nautilus");
 
 	while (window.isOpen())
@@ -12,7 +12,7 @@ int main()
 		EngineTick();
 
 		sf::Event e;
-		
+
 		while (window.pollEvent(e))
 		{
 			if (e.type == sf::Event::Closed)
