@@ -1,5 +1,6 @@
 #include "Engine/Engine.h"
 #include <SFML/Graphics.hpp>
+#include "Engine/Entity.h"
 
 int main()
 {
@@ -15,10 +16,14 @@ int main()
 
 		while (window.pollEvent(e))
 		{
+			Entity* entity = new Entity();
+			
 			if (e.type == sf::Event::Closed)
 			{
 				window.close();
 			}
+			
+			delete entity;
 		}
 
 		window.clear();

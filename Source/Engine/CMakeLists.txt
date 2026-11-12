@@ -1,5 +1,7 @@
-add_library(NautilusEngine SHARED src/Engine/Engine.cpp)
+file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS src/*.cpp includes/*.h)
+add_library(NautilusEngine SHARED ${ENGINE_SOURCES})
 target_include_directories(NautilusEngine PUBLIC includes)
 target_link_libraries(NautilusEngine PUBLIC NautilusCore)
 target_link_libraries(NautilusEngine PUBLIC sfml-graphics)
 set_target_properties(NautilusEngine PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+message(STATUS "Source Engine : ${ENGINE_SOURCES}")
