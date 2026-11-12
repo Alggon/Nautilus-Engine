@@ -1,5 +1,5 @@
 ---
-name: C/C++ CI
+name: CI
 on:
   pull_request:
     branches:
