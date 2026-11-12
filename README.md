@@ -1,4 +1,4 @@
-# Nautilus Engine
+# Nautilus Engine ![Tests](https://github.com/Alggon/Nautilus-Engine/actions/workflows/cmake-c++.yml/badge.svg)
 
 2D C++ Game Engine based on an **Entity-Component** architecture.
 Personal project focused on research and learning.
