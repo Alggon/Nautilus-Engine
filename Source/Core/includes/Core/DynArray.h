@@ -41,6 +41,25 @@ public:
 		++m_size;
 	};
 	/// <summary>
+	/// Add element to the array (back).
+	/// Overload for unique_ptr.
+	/// </summary>
+	/// <param name="v"> : Element to add</param>
+	void Add(T&& v)
+	{
+		if (m_size == m_capacity)
+		{
+			// Expand capacity
+			Reserve();
+		}
+
+		// Construct new element
+		std::construct_at(&m_data[m_size], std::move(v));
+
+		// Update array size
+		++m_size;
+	};
+	/// <summary>
 	/// Add element to the array (front).
 	/// </summary>
 	/// <param name="v"> : Element to add</param>
