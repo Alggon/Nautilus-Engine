@@ -1,21 +1,19 @@
+---
 name: C/C++ CI
-
 on:
   pull_request:
-    branches: [ "main" ]
-
+    branches:
+      - main
 jobs:
   build:
-
     runs-on: windows-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      - uses: actions/checkout@v4
+      - name: init msvc
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: configure
+        run: cmake --preset x64-Debug
+      - name: compile
+        run: cmake --build --preset x64-Debug --parallel
+      - name: tests
+        run: ctest --preset x64-Debug --output-on-failure
