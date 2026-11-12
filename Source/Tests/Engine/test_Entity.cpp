@@ -42,7 +42,20 @@ TEST_CASE("Entity - Remove", "[Entity]")
 	REQUIRE(e->Size() == 1); // Keep Transform
 }
 
-TEST_CASE("Entity - Get wrong type", "[Entity]")
+TEST_CASE("Entity - Remove All", "[Entity]")
+{
+	Entity* e = new Entity();
+
+	e->AddComponent<TestComponent>();
+	e->AddComponent<TestComponent>();
+	e->AddComponent<TestComponent>();
+
+	e->RemoveComponents<TestComponent>();
+
+	REQUIRE(e->Size() == 1); // Keep Transform
+}
+
+TEST_CASE("Entity - Get Wrong Type", "[Entity]")
 {
 	Entity* e = new Entity();
 
