@@ -16,4 +16,5 @@ jobs:
       - name: compile
         run: cmake --build build --config Debug --parallel
       - name: tests
+        working-directory: build
         run: ctest -C Debug --output-on-failure
