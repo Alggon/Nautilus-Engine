@@ -1,0 +1,20 @@
+---
+name: CI
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: init msvc
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: configure
+        run: cmake -B build -A x64
+      - name: compile
+        run: cmake --build build --config Debug --parallel
+      - name: tests
+        working-directory: build
+        run: ctest -C Debug --output-on-failure

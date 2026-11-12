@@ -21,5 +21,6 @@ target_link_libraries(RunTests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(RunTests PRIVATE NautilusCore)
 target_link_libraries(RunTests PRIVATE NautilusEngine)
 
+include(CTest)
 include(Catch)
 catch_discover_tests(RunTests DISCOVERY_MODE PRE_TEST)
