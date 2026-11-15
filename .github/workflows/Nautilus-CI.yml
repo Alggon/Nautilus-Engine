@@ -12,8 +12,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: init msvc
         uses: ilammy/msvc-dev-cmd@v1
-      - name: configure
-        run: cmake -B Package -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: setup sccache
+        uses: mozilla-actions/sccache-action@v0.0.6
+      - name: configure with cache
+        run: | 
+          cmake -B Package -G Ninja `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DCMAKE_C_COMPILER_LAUNCHER=sccache `
+          -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
       - name: compile
         run: cmake --build Package --target Editor RunTests
       - name: test
