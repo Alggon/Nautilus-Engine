@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
   build-and-test:
     runs-on: windows-latest
@@ -14,10 +13,10 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
       - name: setup sccache
         uses: mozilla-actions/sccache-action@v0.0.6
-	with:
-	  storage: gha
+        with:
+          storage: gha
       - name: configure with cache
-        run: | 
+        run: |
           cmake -B Package -G Ninja `
           -DCMAKE_BUILD_TYPE=Release `
           -DCMAKE_C_COMPILER_LAUNCHER=sccache `
