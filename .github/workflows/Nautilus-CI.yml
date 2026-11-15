@@ -17,4 +17,4 @@ jobs:
       - name: compile
         run: cmake --build Package --target Editor RunTests
       - name: test
-        run: ctest --test-dir Package-Tests --output-on-failure
+        run: ctest --output-on-failure
