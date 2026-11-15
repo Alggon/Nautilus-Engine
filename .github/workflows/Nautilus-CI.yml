@@ -23,5 +23,5 @@ jobs:
           -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
       - name: compile
         run: cmake --build Package --target Editor RunTests
-      - name: test
+      - name: tests
         run: ctest --test-dir Package --output-on-failure
