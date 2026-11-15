@@ -14,4 +14,5 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
       - name: configure
         run: cmake -B Package -G Ninja -DCMAKE_BUILD_TYPE=Release
-      - compile: cmake --build Package --target Editor
+      - name: compile
+        run: cmake --build Package --target Editor
