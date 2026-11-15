@@ -2,7 +2,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 
 #include "Engine/Entity.h"
-
+#include "Engine/TransformComponent.h"
 
 class TestComponent : public Component
 {

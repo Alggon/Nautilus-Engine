@@ -1,7 +1,9 @@
 #pragma once
 #include <concepts>
 #include "Core/DynArray.h"
-#include "Engine/TransformComponent.h"
+#include "Engine/Component.h"
+
+class TransformComponent;
 
 class Entity
 {
@@ -30,6 +32,7 @@ public:
 		// Return raw ptr
 		return *rawPtr;
 	}
+	Component* AddComponent(const std::string componentName);
 	/// <summary>
 	/// Remove first component of type T. T should inherit from Component, otherwise function will not compile.
 	/// </summary>

@@ -1,3 +1,5 @@
-add_library(GameCode SHARED src/Game.cpp)
+file(GLOB_RECURSE GAME_SOURCES CONFIGURE_DEPENDS src/*.cpp includes/*.h)
+add_library(GameCode SHARED ${GAME_SOURCES})
+target_include_directories(GameCode PRIVATE includes)
 target_link_libraries(GameCode PRIVATE NautilusEngine)
 set_target_properties(GameCode PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)

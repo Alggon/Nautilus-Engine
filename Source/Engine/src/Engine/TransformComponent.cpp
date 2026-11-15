@@ -1,4 +1,7 @@
 #include "Engine/TransformComponent.h"
+#include "Engine/ComponentRegistry.h"
+
+REGISTER_COMPONENT(TransformComponent)
 
 void TransformComponent::Translate(const double& x, const double& y)
 {
