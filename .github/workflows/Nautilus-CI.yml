@@ -12,7 +12,7 @@ jobs:
       - name: init msvc
         uses: ilammy/msvc-dev-cmd@v1
       - name: configure with cache
-        run: cmake -B Package -G Ninja -DCMAKE_BUILD_TYPE=Release
+        run: cmake -B Package -G Ninja -DCMAKE_BUILD_TYPE=Debug
       - name: compile
         run: cmake --build Package --target Editor RunTests
       - name: tests
