@@ -16,3 +16,14 @@ jobs:
         run: cmake -B Package -G Ninja -DCMAKE_BUILD_TYPE=Release
       - name: compile
         run: cmake --build Package --target Editor
+  
+  test:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - name: configure
+        run: cmake -B Package-Tests -G Ninja -DCMAKE_BUIKD_TYPE=Release
+      - name: compile
+        run: cmake --build Package-Tests --target RunTests
+      - name: test
+        run: ctest --test-dir Package-Tests --output-on-failure
