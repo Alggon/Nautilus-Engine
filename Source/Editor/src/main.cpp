@@ -1,37 +1,46 @@
-#include "Engine/Engine.h"
-#include <SFML/Graphics.hpp>
-#include "Engine/Entity.h"
+#include <SDL3/SDL.h>
 
 int main()
 {
-	EngineStart();
-	
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Nautilus");
-
-	while (window.isOpen())
+	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
-		EngineTick();
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error initializing SDL3", nullptr);
+		return 1;
+	}
+	int width = 800;
+	int height = 600;
 
-		sf::Event e;
+	SDL_Window* win = SDL_CreateWindow("SDL3 Test", width, height, 0);
 
-		while (window.pollEvent(e))
-		{
-			Entity* entity = new Entity();
-			
-			if (e.type == sf::Event::Closed)
-			{
-				window.close();
-			}
-			
-			delete entity;
-		}
-
-		window.clear();
-
-		window.display();
+	if (win == nullptr)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating window", win);
+		SDL_DestroyWindow(win);
+		SDL_Quit();
+		return 1;
 	}
 
-	EngineShutdown();
+	bool running = true;
+
+	while (running)
+	{
+		SDL_Event event{ 0 };
+
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+			case SDL_EVENT_QUIT:
+			{
+				running = false;
+				break;
+			}
+			}
+		}
+	}
+
+	SDL_DestroyWindow(win);
+	SDL_Quit();
 
 	return 0;
 }
